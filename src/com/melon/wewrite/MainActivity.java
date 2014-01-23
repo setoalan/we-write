@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
 				mTVUR.redo();
 			}
 		});
+		
 	}
 
 	@Override

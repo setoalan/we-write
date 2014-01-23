@@ -8,7 +8,7 @@ public final class WeWriteProtos {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface MessageOrBuilder
+  public interface ActionOrBuilder
       extends com.google.protobuf.MessageOrBuilder {
 
     // required string message = 1;
@@ -37,24 +37,24 @@ public final class WeWriteProtos {
     boolean getAddDelete();
   }
   /**
-   * Protobuf type {@code wewrite.Message}
+   * Protobuf type {@code wewrite.Action}
    */
-  public static final class Message extends
+  public static final class Action extends
       com.google.protobuf.GeneratedMessage
-      implements MessageOrBuilder {
-    // Use Message.newBuilder() to construct.
-    private Message(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      implements ActionOrBuilder {
+    // Use Action.newBuilder() to construct.
+    private Action(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private Message(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private Action(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final Message defaultInstance;
-    public static Message getDefaultInstance() {
+    private static final Action defaultInstance;
+    public static Action getDefaultInstance() {
       return defaultInstance;
     }
 
-    public Message getDefaultInstanceForType() {
+    public Action getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -64,7 +64,7 @@ public final class WeWriteProtos {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private Message(
+    private Action(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -112,28 +112,28 @@ public final class WeWriteProtos {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Message_descriptor;
+      return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Action_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Message_fieldAccessorTable
+      return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Action_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.melon.wewrite.WeWriteProtos.Message.class, com.melon.wewrite.WeWriteProtos.Message.Builder.class);
+              com.melon.wewrite.WeWriteProtos.Action.class, com.melon.wewrite.WeWriteProtos.Action.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<Message> PARSER =
-        new com.google.protobuf.AbstractParser<Message>() {
-      public Message parsePartialFrom(
+    public static com.google.protobuf.Parser<Action> PARSER =
+        new com.google.protobuf.AbstractParser<Action>() {
+      public Action parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Message(input, extensionRegistry);
+        return new Action(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Message> getParserForType() {
+    public com.google.protobuf.Parser<Action> getParserForType() {
       return PARSER;
     }
 
@@ -256,53 +256,53 @@ public final class WeWriteProtos {
       return super.writeReplace();
     }
 
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(byte[] data)
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(java.io.InputStream input)
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseDelimitedFrom(java.io.InputStream input)
+    public static com.melon.wewrite.WeWriteProtos.Action parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseDelimitedFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.melon.wewrite.WeWriteProtos.Message parseFrom(
+    public static com.melon.wewrite.WeWriteProtos.Action parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -311,7 +311,7 @@ public final class WeWriteProtos {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.melon.wewrite.WeWriteProtos.Message prototype) {
+    public static Builder newBuilder(com.melon.wewrite.WeWriteProtos.Action prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -323,24 +323,24 @@ public final class WeWriteProtos {
       return builder;
     }
     /**
-     * Protobuf type {@code wewrite.Message}
+     * Protobuf type {@code wewrite.Action}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder>
-       implements com.melon.wewrite.WeWriteProtos.MessageOrBuilder {
+       implements com.melon.wewrite.WeWriteProtos.ActionOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Message_descriptor;
+        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Action_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Message_fieldAccessorTable
+        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Action_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.melon.wewrite.WeWriteProtos.Message.class, com.melon.wewrite.WeWriteProtos.Message.Builder.class);
+                com.melon.wewrite.WeWriteProtos.Action.class, com.melon.wewrite.WeWriteProtos.Action.Builder.class);
       }
 
-      // Construct using com.melon.wewrite.WeWriteProtos.Message.newBuilder()
+      // Construct using com.melon.wewrite.WeWriteProtos.Action.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -373,23 +373,23 @@ public final class WeWriteProtos {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Message_descriptor;
+        return com.melon.wewrite.WeWriteProtos.internal_static_wewrite_Action_descriptor;
       }
 
-      public com.melon.wewrite.WeWriteProtos.Message getDefaultInstanceForType() {
-        return com.melon.wewrite.WeWriteProtos.Message.getDefaultInstance();
+      public com.melon.wewrite.WeWriteProtos.Action getDefaultInstanceForType() {
+        return com.melon.wewrite.WeWriteProtos.Action.getDefaultInstance();
       }
 
-      public com.melon.wewrite.WeWriteProtos.Message build() {
-        com.melon.wewrite.WeWriteProtos.Message result = buildPartial();
+      public com.melon.wewrite.WeWriteProtos.Action build() {
+        com.melon.wewrite.WeWriteProtos.Action result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.melon.wewrite.WeWriteProtos.Message buildPartial() {
-        com.melon.wewrite.WeWriteProtos.Message result = new com.melon.wewrite.WeWriteProtos.Message(this);
+      public com.melon.wewrite.WeWriteProtos.Action buildPartial() {
+        com.melon.wewrite.WeWriteProtos.Action result = new com.melon.wewrite.WeWriteProtos.Action(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
@@ -406,16 +406,16 @@ public final class WeWriteProtos {
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.melon.wewrite.WeWriteProtos.Message) {
-          return mergeFrom((com.melon.wewrite.WeWriteProtos.Message)other);
+        if (other instanceof com.melon.wewrite.WeWriteProtos.Action) {
+          return mergeFrom((com.melon.wewrite.WeWriteProtos.Action)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.melon.wewrite.WeWriteProtos.Message other) {
-        if (other == com.melon.wewrite.WeWriteProtos.Message.getDefaultInstance()) return this;
+      public Builder mergeFrom(com.melon.wewrite.WeWriteProtos.Action other) {
+        if (other == com.melon.wewrite.WeWriteProtos.Action.getDefaultInstance()) return this;
         if (other.hasMessage()) {
           bitField0_ |= 0x00000001;
           message_ = other.message_;
@@ -444,11 +444,11 @@ public final class WeWriteProtos {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.melon.wewrite.WeWriteProtos.Message parsedMessage = null;
+        com.melon.wewrite.WeWriteProtos.Action parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.melon.wewrite.WeWriteProtos.Message) e.getUnfinishedMessage();
+          parsedMessage = (com.melon.wewrite.WeWriteProtos.Action) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -566,22 +566,22 @@ public final class WeWriteProtos {
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:wewrite.Message)
+      // @@protoc_insertion_point(builder_scope:wewrite.Action)
     }
 
     static {
-      defaultInstance = new Message(true);
+      defaultInstance = new Action(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:wewrite.Message)
+    // @@protoc_insertion_point(class_scope:wewrite.Action)
   }
 
   private static com.google.protobuf.Descriptors.Descriptor
-    internal_static_wewrite_Message_descriptor;
+    internal_static_wewrite_Action_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_wewrite_Message_fieldAccessorTable;
+      internal_static_wewrite_Action_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -591,20 +591,20 @@ public final class WeWriteProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rWeWrite.proto\022\007wewrite\"-\n\007Message\022\017\n\007m" +
-      "essage\030\001 \002(\t\022\021\n\taddDelete\030\002 \002(\010B\"\n\021com.m" +
-      "elon.wewriteB\rWeWriteProtos"
+      "\n\rWeWrite.proto\022\007wewrite\",\n\006Action\022\017\n\007me" +
+      "ssage\030\001 \002(\t\022\021\n\taddDelete\030\002 \002(\010B\"\n\021com.me" +
+      "lon.wewriteB\rWeWriteProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
         public com.google.protobuf.ExtensionRegistry assignDescriptors(
             com.google.protobuf.Descriptors.FileDescriptor root) {
           descriptor = root;
-          internal_static_wewrite_Message_descriptor =
+          internal_static_wewrite_Action_descriptor =
             getDescriptor().getMessageTypes().get(0);
-          internal_static_wewrite_Message_fieldAccessorTable = new
+          internal_static_wewrite_Action_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-              internal_static_wewrite_Message_descriptor,
+              internal_static_wewrite_Action_descriptor,
               new java.lang.String[] { "Message", "AddDelete", });
           return null;
         }

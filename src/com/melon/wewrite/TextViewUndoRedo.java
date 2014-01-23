@@ -7,12 +7,15 @@ package com.melon.wewrite;
 
 import java.util.LinkedList;
 
+import com.melon.wewrite.WeWriteProtos.Action;
+
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.Editable;
 import android.text.Selection;
 import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -20,6 +23,8 @@ import android.widget.TextView;
  */
 public class TextViewUndoRedo {
 
+	 private static String TAG = "TextViewUndoRedo";
+	
 	/**
 	 * Is undo/redo being performed? This member signals if an undo/redo
 	 * operation is currently being performed. Changes in the text during
@@ -113,6 +118,8 @@ public class TextViewUndoRedo {
 
 		Selection.setSelection(text, edit.mmBefore == null ? start
 				: (start + edit.mmBefore.length()));
+		
+		Log.i(TAG, "UNDO");
 	}
 
 	/**
@@ -147,6 +154,8 @@ public class TextViewUndoRedo {
 
 		Selection.setSelection(text, edit.mmAfter == null ? start
 				: (start + edit.mmAfter.length()));
+		
+		Log.i(TAG, "REDO");
 	}
 
 	/**
@@ -367,7 +376,7 @@ public class TextViewUndoRedo {
 		 * The text that was inserted by the change event.
 		 */
 		private CharSequence mAfterChange;
-
+		
 		public void beforeTextChanged(CharSequence s, int start, int count,
 				int after) {
 			if (mIsUndoOrRedo) {
@@ -375,16 +384,50 @@ public class TextViewUndoRedo {
 			}
 
 			mBeforeChange = s.subSequence(start, start + count);
+
 		}
 
-		public void onTextChanged(CharSequence s, int start, int before,
-				int count) {
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			if (mIsUndoOrRedo) {
 				return;
 			}
 
 			mAfterChange = s.subSequence(start, start + count);
 			mEditHistory.add(new EditItem(start, mBeforeChange, mAfterChange));
+			
+			
+			// Textwatcher method is not called when UNDO or REDO is pressed.
+			Action mAction;
+			boolean exception = false;
+			
+			if ((mAfterChange.length() - mBeforeChange.length()) == 1) {
+				// Add a character.
+				Log.i(TAG, "ADD");
+				mAction = Action.newBuilder()
+					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
+					.setAddDelete(true)
+					.build();
+			} else if ((mAfterChange.length() - mBeforeChange.length() == -1)) {
+				// Delete a character.
+				Log.i(TAG, "DELETE");
+				mAction = Action.newBuilder()
+					.setMessage(" ")
+					.setAddDelete(false)
+					.build();
+			} else {
+				// Exception - some inconsistency with OS causing method to be called again when nothing changed.
+				mAction = Action.newBuilder()
+					.setMessage(" ")
+					.setAddDelete(false)
+					.build();
+				exception = true;
+			}
+			
+			if (!exception) {
+				Log.i(mAction.getAddDelete() + "", mAction.getMessage());
+				// Serialize and push to Collabrify
+			}
+			
 		}
 
 		public void afterTextChanged(Editable s) {
