@@ -1,0 +1,9 @@
+package wewrite;
+
+option java_package = "com.melon.wewrite";
+option java_outer_classname = "WeWriteProtos";
+
+message Message {
+	required string message = 1;
+	required bool addDelete = 2;
+}
