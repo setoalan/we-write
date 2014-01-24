@@ -19,23 +19,53 @@
         android:inputType="textMultiLine" />
 
     <Button
+        android:id="@+id/redo"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/editText"
+        android:layout_below="@+id/editText"
+        android:text="@string/redo" />
+
+    <Button
         android:id="@+id/undo"
+        style="?android:attr/buttonBarButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText"
         android:layout_below="@+id/editText"
-        android:layout_marginLeft="44dp"
-        android:layout_marginTop="32dp"
         android:text="@string/undo" />
 
-    <Button
-        android:id="@+id/redo"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/undo"
-        android:layout_alignBottom="@+id/undo"
-        android:layout_alignRight="@+id/editText"
-        android:layout_marginRight="34dp"
-        android:text="@string/redo" />
+        android:layout_below="@+id/redo"
+        android:layout_centerHorizontal="true" >
+
+        <Button
+            android:id="@+id/create_session"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/create_session" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/leave_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/leave_session" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:id="@+id/join_session"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/join_session" />
+        
+    </LinearLayout>
 
 </RelativeLayout>
