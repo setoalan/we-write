@@ -11,35 +11,42 @@
     <EditText
         android:id="@+id/editText"
         android:layout_width="fill_parent"
-        android:layout_height="200dp"
+        android:layout_height="350dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
         android:ems="10"
+        android:gravity="top"
         android:inputType="textMultiLine" />
 
-    <Button
-        android:id="@+id/redo"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/action"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignRight="@+id/editText"
         android:layout_below="@+id/editText"
-        android:text="@string/redo" />
+        android:layout_centerHorizontal="true"  >
 
-    <Button
-        android:id="@+id/undo"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_below="@+id/editText"
-        android:text="@string/undo" />
+        <Button
+            android:id="@+id/undo"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/undo"
+            android:layout_weight="1" />
+        
+        <Button
+            android:id="@+id/redo"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/redo"
+            android:layout_weight="1"/>
+        
+    </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/redo"
+        android:layout_below="@+id/action"
         android:layout_centerHorizontal="true" >
 
         <Button
@@ -51,21 +58,20 @@
             android:text="@string/create_session" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/leave_session"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/leave_session" />
 
         <Button
-            style="?android:attr/buttonBarButtonStyle"
             android:id="@+id/join_session"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/join_session" />
-        
     </LinearLayout>
 
 </RelativeLayout>
