@@ -8,5 +8,6 @@
     <string name="create_session">Create Session</string>
     <string name="leave_session">Leave Session</string>
 	<string name="join_session">Join Session</string>
+	<string name="broadcast">Broadcast</string>
     
 </resources>

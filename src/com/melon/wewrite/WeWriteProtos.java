@@ -35,6 +35,16 @@ public final class WeWriteProtos {
      * <code>required bool addDelete = 2;</code>
      */
     boolean getAddDelete();
+
+    // required int32 cursorPosition = 3;
+    /**
+     * <code>required int32 cursorPosition = 3;</code>
+     */
+    boolean hasCursorPosition();
+    /**
+     * <code>required int32 cursorPosition = 3;</code>
+     */
+    int getCursorPosition();
   }
   /**
    * Protobuf type {@code wewrite.Action}
@@ -96,6 +106,11 @@ public final class WeWriteProtos {
             case 16: {
               bitField0_ |= 0x00000002;
               addDelete_ = input.readBool();
+              break;
+            }
+            case 24: {
+              bitField0_ |= 0x00000004;
+              cursorPosition_ = input.readInt32();
               break;
             }
           }
@@ -197,9 +212,26 @@ public final class WeWriteProtos {
       return addDelete_;
     }
 
+    // required int32 cursorPosition = 3;
+    public static final int CURSORPOSITION_FIELD_NUMBER = 3;
+    private int cursorPosition_;
+    /**
+     * <code>required int32 cursorPosition = 3;</code>
+     */
+    public boolean hasCursorPosition() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required int32 cursorPosition = 3;</code>
+     */
+    public int getCursorPosition() {
+      return cursorPosition_;
+    }
+
     private void initFields() {
       message_ = "";
       addDelete_ = false;
+      cursorPosition_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -211,6 +243,10 @@ public final class WeWriteProtos {
         return false;
       }
       if (!hasAddDelete()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasCursorPosition()) {
         memoizedIsInitialized = 0;
         return false;
       }
@@ -226,6 +262,9 @@ public final class WeWriteProtos {
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeBool(2, addDelete_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeInt32(3, cursorPosition_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -243,6 +282,10 @@ public final class WeWriteProtos {
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(2, addDelete_);
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(3, cursorPosition_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -364,6 +407,8 @@ public final class WeWriteProtos {
         bitField0_ = (bitField0_ & ~0x00000001);
         addDelete_ = false;
         bitField0_ = (bitField0_ & ~0x00000002);
+        cursorPosition_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000004);
         return this;
       }
 
@@ -400,6 +445,10 @@ public final class WeWriteProtos {
           to_bitField0_ |= 0x00000002;
         }
         result.addDelete_ = addDelete_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.cursorPosition_ = cursorPosition_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -424,6 +473,9 @@ public final class WeWriteProtos {
         if (other.hasAddDelete()) {
           setAddDelete(other.getAddDelete());
         }
+        if (other.hasCursorPosition()) {
+          setCursorPosition(other.getCursorPosition());
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -434,6 +486,10 @@ public final class WeWriteProtos {
           return false;
         }
         if (!hasAddDelete()) {
+          
+          return false;
+        }
+        if (!hasCursorPosition()) {
           
           return false;
         }
@@ -566,6 +622,39 @@ public final class WeWriteProtos {
         return this;
       }
 
+      // required int32 cursorPosition = 3;
+      private int cursorPosition_ ;
+      /**
+       * <code>required int32 cursorPosition = 3;</code>
+       */
+      public boolean hasCursorPosition() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required int32 cursorPosition = 3;</code>
+       */
+      public int getCursorPosition() {
+        return cursorPosition_;
+      }
+      /**
+       * <code>required int32 cursorPosition = 3;</code>
+       */
+      public Builder setCursorPosition(int value) {
+        bitField0_ |= 0x00000004;
+        cursorPosition_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 cursorPosition = 3;</code>
+       */
+      public Builder clearCursorPosition() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        cursorPosition_ = 0;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:wewrite.Action)
     }
 
@@ -591,9 +680,10 @@ public final class WeWriteProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rWeWrite.proto\022\007wewrite\",\n\006Action\022\017\n\007me" +
-      "ssage\030\001 \002(\t\022\021\n\taddDelete\030\002 \002(\010B\"\n\021com.me" +
-      "lon.wewriteB\rWeWriteProtos"
+      "\n\rWeWrite.proto\022\007wewrite\"D\n\006Action\022\017\n\007me" +
+      "ssage\030\001 \002(\t\022\021\n\taddDelete\030\002 \002(\010\022\026\n\016cursor" +
+      "Position\030\003 \002(\005B\"\n\021com.melon.wewriteB\rWeW" +
+      "riteProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -605,7 +695,7 @@ public final class WeWriteProtos {
           internal_static_wewrite_Action_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wewrite_Action_descriptor,
-              new java.lang.String[] { "Message", "AddDelete", });
+              new java.lang.String[] { "Message", "AddDelete", "CursorPosition", });
           return null;
         }
       };

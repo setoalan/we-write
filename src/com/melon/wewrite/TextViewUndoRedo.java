@@ -396,7 +396,8 @@ public class TextViewUndoRedo {
 			mEditHistory.add(new EditItem(start, mBeforeChange, mAfterChange));
 			
 			
-			// Textwatcher method is not called when UNDO or REDO is pressed.
+			// Textwatcher method is not called when UNDO or REDO is pressed
+			// Need to send cursor change too
 			Action mAction;
 			boolean exception = false;
 			
@@ -406,6 +407,7 @@ public class TextViewUndoRedo {
 				mAction = Action.newBuilder()
 					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
 					.setAddDelete(true)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
 					.build();
 			} else if ((mAfterChange.length() - mBeforeChange.length() == -1)) {
 				// Delete a character.
@@ -413,18 +415,20 @@ public class TextViewUndoRedo {
 				mAction = Action.newBuilder()
 					.setMessage(" ")
 					.setAddDelete(false)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
 					.build();
 			} else {
 				// Exception - some inconsistency with OS causing method to be called again when nothing changed.
 				mAction = Action.newBuilder()
 					.setMessage(" ")
 					.setAddDelete(false)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
 					.build();
 				exception = true;
 			}
 			
 			if (!exception) {
-				Log.i(mAction.getAddDelete() + "", mAction.getMessage());
+				Log.i(mAction.getAddDelete() + "", mAction.getMessage() + " " + mAction.getCursorPosition());
 				// Serialize and push to Collabrify
 			}
 			

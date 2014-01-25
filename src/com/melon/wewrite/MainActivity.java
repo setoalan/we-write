@@ -43,11 +43,12 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	private static final String ACCESS_TOKEN = "338692774BBE";
 	
 	private CollabrifyClient myClient;
-	private EditText mEditText;
-	private Button mUndo, mRedo, mCreateSession, mLeaveSession, mJoinSession;
+	public static EditText mEditText;
+	private Button mUndo, mRedo, mBroadcast, mCreateSession, mLeaveSession, mJoinSession;
 	private ArrayList<String> tags = new ArrayList<String>();
 	private long sessionId;
 	private String sessionName;
+	private TextViewUndoRedo mTVUR;
 	
 	private CollabrifySessionListener sessionListener = this;
 	private CollabrifyListSessionsListener listSessionsListener = this;
@@ -64,11 +65,11 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		mEditText = (EditText) findViewById(R.id.editText);
 		mUndo = (Button) findViewById(R.id.undo);
 		mRedo = (Button) findViewById(R.id.redo);
+		mBroadcast = (Button) findViewById(R.id.broadcast);
 		mCreateSession = (Button) findViewById(R.id.create_session);
 		mLeaveSession = (Button) findViewById(R.id.leave_session);
 		mJoinSession = (Button) findViewById(R.id.join_session);
-		
-		final TextViewUndoRedo mTVUR = new TextViewUndoRedo(mEditText);
+		mTVUR = new TextViewUndoRedo(mEditText);
 		
 		mUndo.setOnClickListener(new OnClickListener() {
 			@Override
@@ -81,6 +82,24 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			@Override
 			public void onClick(View v) {
 				mTVUR.redo();
+			}
+		});
+		
+		mBroadcast.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (mEditText.getText().toString().isEmpty())
+					return;
+				if (myClient != null && myClient.inSession()) {
+					try {
+						myClient.broadcast(mEditText.getText().toString().getBytes(), "letter", broadcastListener);
+						mEditText.getText().clear();
+						// Broadcast cursor change using mEditText().getSelectionStart(), etc.
+						// Calls onBroadcastDone
+					} catch (CollabrifyException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -136,12 +155,10 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			e.printStackTrace();
 		}
 		tags.add("melon");
-		
 	}
 	
-	public void doBroadcast(View v) {
-		// Stub, to be used to broadcast data automatically instead of push event
-		// Calls onBroadcastDone
+	public int getCursorPosition() {
+		return mEditText.getSelectionStart();
 	}
 
 	@Override
@@ -166,7 +183,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			@Override
 			public void run() {
 				showToast("Left session");
-				mCreateSession.setText(R.string.create_session);
+				mJoinSession.setText(R.string.join_session);
 			}
 		});
 	}
@@ -274,12 +291,12 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			String eventType, final byte[] data, long elapsed) {
 		Utils.printMethodName(TAG);
 		runOnUiThread(new Runnable() {
-			
 			@Override
 			public void run() {
 				Utils.printMethodName(TAG);
 				String message = new String(data);
-				// Add necessary changes to EditText view
+				mEditText.setText(message);
+				// Add necessary changes to EditText view when receiving
 			}
 		});
 	}
@@ -297,5 +314,4 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			}
 		});
 	}
-
 }

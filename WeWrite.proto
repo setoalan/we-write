@@ -6,4 +6,5 @@ option java_outer_classname = "WeWriteProtos";
 message Action {
 	required string message = 1;
 	required bool addDelete = 2;
+	required int32 cursorPosition = 3;
 }
