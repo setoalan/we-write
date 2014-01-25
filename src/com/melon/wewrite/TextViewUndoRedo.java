@@ -395,7 +395,6 @@ public class TextViewUndoRedo {
 			mAfterChange = s.subSequence(start, start + count);
 			mEditHistory.add(new EditItem(start, mBeforeChange, mAfterChange));
 			
-			
 			// Textwatcher method is not called when UNDO or REDO is pressed
 			// Need to send cursor change too
 			Action mAction;

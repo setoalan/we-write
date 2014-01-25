@@ -22,31 +22,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText"
-        android:layout_centerHorizontal="true"  >
+        android:layout_centerHorizontal="true" >
 
         <Button
             android:id="@+id/undo"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/undo"
-            android:layout_weight="1" />
+            android:onClick="undo" />
         
      	<Button
             android:id="@+id/broadcast"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/broadcast"
-            android:layout_weight="1" />
+            android:onClick="broadcast" />
         
         <Button
             android:id="@+id/redo"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/redo"
-            android:layout_weight="1"/>
+            android:onClick="redo" />
         
     </LinearLayout>
 
@@ -62,7 +65,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/create_session" />
+            android:text="@string/create_session"
+            android:onClick="createSession" />
 
         <Button
             android:id="@+id/leave_session"
@@ -70,7 +74,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/leave_session" />
+            android:text="@string/leave_session"
+            android:onClick="leaveSession" />
 
         <Button
             android:id="@+id/join_session"
@@ -78,7 +83,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/join_session" />
+            android:text="@string/join_session"
+            android:onClick="joinSession" />
+        
     </LinearLayout>
 
 </RelativeLayout>

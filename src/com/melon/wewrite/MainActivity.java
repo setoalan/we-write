@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -44,7 +43,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	
 	private CollabrifyClient myClient;
 	public static EditText mEditText;
-	private Button mUndo, mRedo, mBroadcast, mCreateSession, mLeaveSession, mJoinSession;
+	private Button mCreateSession, mJoinSession;
 	private ArrayList<String> tags = new ArrayList<String>();
 	private long sessionId;
 	private String sessionName;
@@ -63,89 +62,9 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		setContentView(R.layout.activity_main);
 		
 		mEditText = (EditText) findViewById(R.id.editText);
-		mUndo = (Button) findViewById(R.id.undo);
-		mRedo = (Button) findViewById(R.id.redo);
-		mBroadcast = (Button) findViewById(R.id.broadcast);
 		mCreateSession = (Button) findViewById(R.id.create_session);
-		mLeaveSession = (Button) findViewById(R.id.leave_session);
 		mJoinSession = (Button) findViewById(R.id.join_session);
 		mTVUR = new TextViewUndoRedo(mEditText);
-		
-		mUndo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mTVUR.undo();
-			}
-		});
-
-		mRedo.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				mTVUR.redo();
-			}
-		});
-		
-		mBroadcast.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (mEditText.getText().toString().isEmpty())
-					return;
-				if (myClient != null && myClient.inSession()) {
-					try {
-						myClient.broadcast(mEditText.getText().toString().getBytes(), "letter", broadcastListener);
-						mEditText.getText().clear();
-						// Broadcast cursor change using mEditText().getSelectionStart(), etc.
-						// Calls onBroadcastDone
-					} catch (CollabrifyException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		
-		mCreateSession.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				try {
-					myClient.createSession("Melon Session Name", tags, null, 1, createSessionListener, sessionListener);
-					// Calls onSessionCreated
-				} catch (ConnectException e) {
-					e.printStackTrace();
-				} catch (CollabrifyException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		mJoinSession.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (myClient.inSession())
-					return;
-				try {
-					myClient.requestSessionList(tags, listSessionsListener);
-					// Calls onReceiveSessionList
-				} catch (CollabrifyException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		mLeaveSession.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!myClient.inSession())
-					return;
-				try {
-					myClient.leaveSession(false, leaveSessionListener);
-					// Calls onDisconnect
-				} catch (LeaveException e) {
-					e.printStackTrace();
-				} catch (CollabrifyException e) {
-					e.printStackTrace();
-				}
-			}
-		});
 		
 		try {
 			myClient = CollabrifyClient.newClient(this, GMAIL, DISPLAY_NAME, ACCOUNT_GMAIL, ACCESS_TOKEN, false);
@@ -157,8 +76,62 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		tags.add("melon");
 	}
 	
-	public int getCursorPosition() {
-		return mEditText.getSelectionStart();
+	public void undo(View view) {
+		mTVUR.undo();
+	}
+	
+	public void redo(View view) {
+		mTVUR.redo();
+	}
+	
+	public void broadcast(View view) {
+		if (mEditText.getText().toString().isEmpty())
+			return;
+		if (myClient != null && myClient.inSession()) {
+			try {
+				myClient.broadcast(mEditText.getText().toString().getBytes(), "letter", broadcastListener);
+				mEditText.getText().clear();
+				// Broadcast cursor change using mEditText().getSelectionStart(), etc.
+				// Calls onBroadcastDone
+			} catch (CollabrifyException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void createSession(View view) {
+		try {
+			myClient.createSession("Melon Session Name", tags, null, 1, createSessionListener, sessionListener);
+			// Calls onSessionCreated
+		} catch (ConnectException e) {
+			e.printStackTrace();
+		} catch (CollabrifyException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void joinSession(View view) {
+		if (myClient.inSession())
+			return;
+		try {
+			myClient.requestSessionList(tags, listSessionsListener);
+			// Calls onReceiveSessionList
+		} catch (CollabrifyException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void leaveSession(View view) {
+		if (!myClient.inSession())
+			return;
+		try {
+			myClient.leaveSession(false, leaveSessionListener);
+			// Calls onDisconnect
+		} catch (LeaveException e) {
+			e.printStackTrace();
+		} catch (CollabrifyException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
