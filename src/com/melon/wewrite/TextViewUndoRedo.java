@@ -7,8 +7,6 @@ package com.melon.wewrite;
 
 import java.util.LinkedList;
 
-import com.melon.wewrite.WeWriteProtos.Action;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.text.Editable;
@@ -22,8 +20,6 @@ import android.widget.TextView;
  * A generic undo/redo implementation for TextViews.
  */
 public class TextViewUndoRedo {
-
-	private Action mAction;
 	
 	private static String TAG = "TextViewUndoRedo";
 	
@@ -386,7 +382,6 @@ public class TextViewUndoRedo {
 			}
 
 			mBeforeChange = s.subSequence(start, start + count);
-
 		}
 
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -396,42 +391,6 @@ public class TextViewUndoRedo {
 
 			mAfterChange = s.subSequence(start, start + count);
 			mEditHistory.add(new EditItem(start, mBeforeChange, mAfterChange));
-			
-			// Textwatcher method is not called when UNDO or REDO is pressed
-			// Need to send cursor change too
-			
-			boolean exception = false;
-			
-			if ((mAfterChange.length() - mBeforeChange.length()) == 1) {
-				// Add a character.
-				Log.i(TAG, "ADD");
-				mAction = Action.newBuilder()
-					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
-					.setAddDelete(true)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-			} else if ((mAfterChange.length() - mBeforeChange.length() == -1)) {
-				// Delete a character.
-				Log.i(TAG, "DELETE");
-				mAction = Action.newBuilder()
-					.setMessage(" ")
-					.setAddDelete(false)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-			} else {
-				// Exception - some inconsistency with OS causing method to be called again when nothing changed.
-				mAction = Action.newBuilder()
-					.setMessage(" ")
-					.setAddDelete(false)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-				exception = true;
-			}
-			
-			if (!exception) {
-				Log.i(mAction.getAddDelete() + "", mAction.getMessage() + " " + mAction.getCursorPosition());
-				// Serialize and push to Collabrify
-			}
 		}
 
 		public void afterTextChanged(Editable s) {

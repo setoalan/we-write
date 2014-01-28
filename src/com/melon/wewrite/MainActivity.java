@@ -9,12 +9,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.protobuf.InvalidProtocolBufferException;
+import com.melon.wewrite.WeWriteProtos.Action;
+
 import edu.umich.imlc.android.common.Utils;
 import edu.umich.imlc.collabrify.client.CollabrifyClient;
 import edu.umich.imlc.collabrify.client.CollabrifyListener.CollabrifyBroadcastListener;
@@ -48,6 +54,9 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	private long sessionId;
 	private String sessionName;
 	private TextViewUndoRedo mTVUR;
+	private Action mAction;
+	private EditTextChangeListener mEditTextChangeListener;
+	private boolean isBroadcasting = false;
 	
 	private CollabrifySessionListener sessionListener = this;
 	private CollabrifyListSessionsListener listSessionsListener = this;
@@ -55,6 +64,8 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	private CollabrifyCreateSessionListener createSessionListener = this;
 	private CollabrifyJoinSessionListener joinSessionListener = this;
 	private CollabrifyLeaveSessionListener leaveSessionListener = this;
+
+	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,10 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		mCreateSession = (Button) findViewById(R.id.create_session);
 		mJoinSession = (Button) findViewById(R.id.join_session);
 		mTVUR = new TextViewUndoRedo(mEditText);
+		mEditTextChangeListener = new EditTextChangeListener();
+		mEditText.addTextChangedListener(mEditTextChangeListener);
 		
+		// Instantiate Collabrify Client
 		try {
 			myClient = CollabrifyClient.newClient(this, GMAIL, DISPLAY_NAME, ACCOUNT_GMAIL, ACCESS_TOKEN, false);
 		} catch (InterruptedException e) {
@@ -73,6 +87,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		} catch (ExecutionException e) {
 			e.printStackTrace();
 		}
+		// All sessions created are under this name
 		tags.add("melon");
 	}
 	
@@ -84,15 +99,14 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		mTVUR.redo();
 	}
 	
-	public void broadcast(View view) {
+	public void broadcast(Action mAction) {
 		if (mEditText.getText().toString().isEmpty())
 			return;
 		if (myClient != null && myClient.inSession()) {
 			try {
-				myClient.broadcast(mEditText.getText().toString().getBytes(), "letter", broadcastListener);
-				mEditText.getText().clear();
-				// Broadcast cursor change using mEditText().getSelectionStart(), etc.
-				// Calls onBroadcastDone
+				// Broadcast action as byte array
+				myClient.broadcast(mAction.toByteArray(), "letter", broadcastListener);
+				// Calls onBroadcastDone after
 			} catch (CollabrifyException e) {
 				e.printStackTrace();
 			}
@@ -101,7 +115,9 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	
 	public void createSession(View view) {
 		try {
-			myClient.createSession("Melon Session Name", tags, null, 1, createSessionListener, sessionListener);
+			// Creates a session named "Melon 5", can change to create other session to start over
+			// Parameters are in the Collabrify online documentation
+			myClient.createSession("Melon 5", tags, null, 1, createSessionListener, sessionListener);
 			// Calls onSessionCreated
 		} catch (ConnectException e) {
 			e.printStackTrace();
@@ -114,6 +130,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		if (myClient.inSession())
 			return;
 		try {
+			// Returns a view that has a list of sessions under the tag, right now it's "melon"
 			myClient.requestSessionList(tags, listSessionsListener);
 			// Calls onReceiveSessionList
 		} catch (CollabrifyException e) {
@@ -125,6 +142,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		if (!myClient.inSession())
 			return;
 		try {
+			// Leave session
 			myClient.leaveSession(false, leaveSessionListener);
 			// Calls onDisconnect
 		} catch (LeaveException e) {
@@ -216,6 +234,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 				// When the user chooses a session, join it
 				sessionId = sessionList.get(which).id();
 				try {
+					// Join the session the user clicked on
 					myClient.joinSession(sessionId, null, joinSessionListener, sessionListener);
 				} catch (ConnectException e) {
 					e.printStackTrace();
@@ -264,12 +283,31 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			String eventType, final byte[] data, long elapsed) {
 		Utils.printMethodName(TAG);
 		runOnUiThread(new Runnable() {
+			Action mAction;
 			@Override
 			public void run() {
+				Log.i(TAG, "Receiving");
+				// Removes the listener so it doesn't call the text change methods
+				// when modifying the textview.
+				mEditText.removeTextChangedListener(mEditTextChangeListener);
 				Utils.printMethodName(TAG);
-				String message = new String(data);
-				mEditText.setText(message);
-				// Add necessary changes to EditText view when receiving
+				try {
+					// If the user is currently broadcasting an action
+					if (!isBroadcasting) {
+						mAction = Action.parseFrom(data);
+						if (mAction.getAddDelete()) {
+							// Adding a character
+							mEditText.append(mAction.getMessage());
+						} else {
+							// Delete a character, NOT DONE
+						}
+					}
+					// Add back the listener
+					isBroadcasting = false;
+					mEditText.addTextChangedListener(mEditTextChangeListener);
+				} catch (InvalidProtocolBufferException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
@@ -279,6 +317,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		// UNUSED
 	}
 	
+	// Displays a popup near the bottom of the screen
 	private void showToast(final String text) {
 		runOnUiThread(new Runnable() {
 			@Override
@@ -287,4 +326,61 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			}
 		});
 	}
+	
+	private final class EditTextChangeListener implements TextWatcher {
+		
+		private CharSequence mBeforeChange;
+		private CharSequence mAfterChange;
+		
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before, int count) {
+			mAfterChange = s.subSequence(start, start + count);
+			
+			// Textwatcher method is not called when UNDO or REDO is pressed
+			
+			boolean exception = false;
+			
+			if ((mAfterChange.length() - mBeforeChange.length()) == 1) {
+				// Add a character
+				Log.i(TAG, "ADD");
+				mAction = Action.newBuilder()
+					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
+					.setAddDelete(true)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+					.build();
+			} else if ((mAfterChange.length() - mBeforeChange.length() == -1)) {
+				// Delete a character
+				Log.i(TAG, "DELETE");
+				mAction = Action.newBuilder()
+					.setMessage(" ")
+					.setAddDelete(false)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+					.build();
+			} else {
+				// Exception - some inconsistency with OS causing method to be called again when nothing changed.
+				mAction = Action.newBuilder()
+					.setMessage(" ")
+					.setAddDelete(false)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+					.build();
+				exception = true;
+			}
+			
+			if (!exception) {
+				Log.i(mAction.getAddDelete() + "", mAction.getMessage() + " " + mAction.getCursorPosition());
+				broadcast(mAction);
+				isBroadcasting  = true;
+			}
+		}
+		
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			mBeforeChange = s.subSequence(start, start + count);
+		}
+		
+		@Override
+		public void afterTextChanged(Editable s) {
+		}
+	};
+	
 }
