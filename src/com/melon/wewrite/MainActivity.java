@@ -250,12 +250,12 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	}
 
 	@Override
-	public void onParticipantJoined(CollabrifyParticipant arg0) {
+	public void onParticipantJoined(CollabrifyParticipant p) {
 		// UNUSED
 	}
 
 	@Override
-	public void onParticipantLeft(CollabrifyParticipant arg0) {
+	public void onParticipantLeft(CollabrifyParticipant p) {
 		// UNUSED
 	}
 
@@ -275,7 +275,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	}
 
 	@Override
-	public void onSessionEnd(long arg0) {
+	public void onSessionEnd(long id) {
 		// UNUSED
 	}
 	

@@ -23,7 +23,9 @@ import android.widget.TextView;
  */
 public class TextViewUndoRedo {
 
-	 private static String TAG = "TextViewUndoRedo";
+	private Action mAction;
+	
+	private static String TAG = "TextViewUndoRedo";
 	
 	/**
 	 * Is undo/redo being performed? This member signals if an undo/redo
@@ -397,7 +399,7 @@ public class TextViewUndoRedo {
 			
 			// Textwatcher method is not called when UNDO or REDO is pressed
 			// Need to send cursor change too
-			Action mAction;
+			
 			boolean exception = false;
 			
 			if ((mAfterChange.length() - mBeforeChange.length()) == 1) {
@@ -430,7 +432,6 @@ public class TextViewUndoRedo {
 				Log.i(mAction.getAddDelete() + "", mAction.getMessage() + " " + mAction.getCursorPosition());
 				// Serialize and push to Collabrify
 			}
-			
 		}
 
 		public void afterTextChanged(Editable s) {
