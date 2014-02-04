@@ -3,6 +3,7 @@ package com.melon.wewrite;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 import android.app.Activity;
@@ -56,7 +57,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	private TextViewUndoRedo mTVUR;
 	private Action mAction;
 	private EditTextChangeListener mEditTextChangeListener;
-	private boolean isBroadcasting = false;
+	private String mUuid;
 	
 	private CollabrifySessionListener sessionListener = this;
 	private CollabrifyListSessionsListener listSessionsListener = this;
@@ -65,8 +66,6 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	private CollabrifyJoinSessionListener joinSessionListener = this;
 	private CollabrifyLeaveSessionListener leaveSessionListener = this;
 
-	
-	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -78,6 +77,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		mTVUR = new TextViewUndoRedo(mEditText);
 		mEditTextChangeListener = new EditTextChangeListener();
 		mEditText.addTextChangedListener(mEditTextChangeListener);
+		mUuid = UUID.randomUUID().toString();
 		
 		// Instantiate Collabrify Client
 		try {
@@ -88,7 +88,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			e.printStackTrace();
 		}
 		// All sessions created are under this name
-		tags.add("melon");
+		tags.add("melon441");
 	}
 	
 	public void undo(View view) {
@@ -117,7 +117,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		try {
 			// Creates a session named "Melon 5", can change to create other session to start over
 			// Parameters are in the Collabrify online documentation
-			myClient.createSession("Melon 5", tags, null, 1, createSessionListener, sessionListener);
+			myClient.createSession("Melon0", tags, null, 1, createSessionListener, sessionListener);
 			// Calls onSessionCreated
 		} catch (ConnectException e) {
 			e.printStackTrace();
@@ -207,7 +207,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 
 	@Override
 	public void onBroadcastDone(final byte[] event, long orderId, long srid) {
-		showToast(new String(event) + " broadcasted");
+		//showToast(new String(event) + " broadcasted");
 	}
 
 	@Override
@@ -286,24 +286,15 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 			Action mAction;
 			@Override
 			public void run() {
-				Log.i(TAG, "Receiving");
-				// Removes the listener so it doesn't call the text change methods
-				// when modifying the textview.
-				mEditText.removeTextChangedListener(mEditTextChangeListener);
+				Log.i("Receiving", TAG);
 				Utils.printMethodName(TAG);
 				try {
-					// If the user is currently broadcasting an action
-					if (!isBroadcasting) {
-						mAction = Action.parseFrom(data);
-						if (mAction.getAddDelete()) {
-							// Adding a character
-							mEditText.append(mAction.getMessage());
-						} else {
-							// Delete a character, NOT DONE
-						}
-					}
-					// Add back the listener
-					isBroadcasting = false;
+					mEditText.removeTextChangedListener(mEditTextChangeListener);
+					mAction = Action.parseFrom(data);
+					if (!mAction.getAddDelete() && mEditText.length() == 1)
+						mEditText.setText("");
+					if (!mAction.getUuid().equals(mUuid))
+						mEditText.setText(mAction.getMessage());
 					mEditText.addTextChangedListener(mEditTextChangeListener);
 				} catch (InvalidProtocolBufferException e) {
 					e.printStackTrace();
@@ -329,58 +320,23 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	
 	private final class EditTextChangeListener implements TextWatcher {
 		
-		private CharSequence mBeforeChange;
-		private CharSequence mAfterChange;
-		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			mAfterChange = s.subSequence(start, start + count);
+			mAction = Action.newBuilder()
+			.setMessage(mEditText.getText().toString())
+			.setAddDelete(true)
+			.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+			.setUuid(mUuid)
+			.build();
 			
-			// Textwatcher method is not called when UNDO or REDO is pressed
-			
-			boolean exception = false;
-			
-			if ((mAfterChange.length() - mBeforeChange.length()) == 1) {
-				// Add a character
-				Log.i(TAG, "ADD");
-				mAction = Action.newBuilder()
-					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
-					.setAddDelete(true)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-			} else if ((mAfterChange.length() - mBeforeChange.length() == -1)) {
-				// Delete a character
-				Log.i(TAG, "DELETE");
-				mAction = Action.newBuilder()
-					.setMessage(" ")
-					.setAddDelete(false)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-			} else {
-				// Exception - some inconsistency with OS causing method to be called again when nothing changed.
-				mAction = Action.newBuilder()
-					.setMessage(" ")
-					.setAddDelete(false)
-					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-					.build();
-				exception = true;
-			}
-			
-			if (!exception) {
-				Log.i(mAction.getAddDelete() + "", mAction.getMessage() + " " + mAction.getCursorPosition());
-				broadcast(mAction);
-				isBroadcasting  = true;
-			}
+			broadcast(mAction);
 		}
 		
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			mBeforeChange = s.subSequence(start, start + count);
-		}
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 		
 		@Override
-		public void afterTextChanged(Editable s) {
-		}
+		public void afterTextChanged(Editable s) {}
 	};
 	
 }

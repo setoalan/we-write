@@ -33,15 +33,6 @@
             android:text="@string/undo"
             android:onClick="undo" />
         
-     	<Button
-            android:id="@+id/broadcast"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/broadcast"
-            android:onClick="broadcast" />
-        
         <Button
             android:id="@+id/redo"
             style="?android:attr/buttonBarButtonStyle"

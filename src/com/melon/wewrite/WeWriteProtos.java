@@ -45,6 +45,21 @@ public final class WeWriteProtos {
      * <code>required int32 cursorPosition = 3;</code>
      */
     int getCursorPosition();
+
+    // required string uuid = 4;
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    boolean hasUuid();
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    java.lang.String getUuid();
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    com.google.protobuf.ByteString
+        getUuidBytes();
   }
   /**
    * Protobuf type {@code wewrite.Action}
@@ -111,6 +126,11 @@ public final class WeWriteProtos {
             case 24: {
               bitField0_ |= 0x00000004;
               cursorPosition_ = input.readInt32();
+              break;
+            }
+            case 34: {
+              bitField0_ |= 0x00000008;
+              uuid_ = input.readBytes();
               break;
             }
           }
@@ -228,10 +248,54 @@ public final class WeWriteProtos {
       return cursorPosition_;
     }
 
+    // required string uuid = 4;
+    public static final int UUID_FIELD_NUMBER = 4;
+    private java.lang.Object uuid_;
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    public boolean hasUuid() {
+      return ((bitField0_ & 0x00000008) == 0x00000008);
+    }
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    public java.lang.String getUuid() {
+      java.lang.Object ref = uuid_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          uuid_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string uuid = 4;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUuidBytes() {
+      java.lang.Object ref = uuid_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        uuid_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
     private void initFields() {
       message_ = "";
       addDelete_ = false;
       cursorPosition_ = 0;
+      uuid_ = "";
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -250,6 +314,10 @@ public final class WeWriteProtos {
         memoizedIsInitialized = 0;
         return false;
       }
+      if (!hasUuid()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -265,6 +333,9 @@ public final class WeWriteProtos {
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         output.writeInt32(3, cursorPosition_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        output.writeBytes(4, getUuidBytes());
       }
       getUnknownFields().writeTo(output);
     }
@@ -286,6 +357,10 @@ public final class WeWriteProtos {
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
           .computeInt32Size(3, cursorPosition_);
+      }
+      if (((bitField0_ & 0x00000008) == 0x00000008)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(4, getUuidBytes());
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -409,6 +484,8 @@ public final class WeWriteProtos {
         bitField0_ = (bitField0_ & ~0x00000002);
         cursorPosition_ = 0;
         bitField0_ = (bitField0_ & ~0x00000004);
+        uuid_ = "";
+        bitField0_ = (bitField0_ & ~0x00000008);
         return this;
       }
 
@@ -449,6 +526,10 @@ public final class WeWriteProtos {
           to_bitField0_ |= 0x00000004;
         }
         result.cursorPosition_ = cursorPosition_;
+        if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
+          to_bitField0_ |= 0x00000008;
+        }
+        result.uuid_ = uuid_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
@@ -476,6 +557,11 @@ public final class WeWriteProtos {
         if (other.hasCursorPosition()) {
           setCursorPosition(other.getCursorPosition());
         }
+        if (other.hasUuid()) {
+          bitField0_ |= 0x00000008;
+          uuid_ = other.uuid_;
+          onChanged();
+        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -490,6 +576,10 @@ public final class WeWriteProtos {
           return false;
         }
         if (!hasCursorPosition()) {
+          
+          return false;
+        }
+        if (!hasUuid()) {
           
           return false;
         }
@@ -655,6 +745,80 @@ public final class WeWriteProtos {
         return this;
       }
 
+      // required string uuid = 4;
+      private java.lang.Object uuid_ = "";
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public boolean hasUuid() {
+        return ((bitField0_ & 0x00000008) == 0x00000008);
+      }
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public java.lang.String getUuid() {
+        java.lang.Object ref = uuid_;
+        if (!(ref instanceof java.lang.String)) {
+          java.lang.String s = ((com.google.protobuf.ByteString) ref)
+              .toStringUtf8();
+          uuid_ = s;
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUuidBytes() {
+        java.lang.Object ref = uuid_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          uuid_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public Builder setUuid(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public Builder clearUuid() {
+        bitField0_ = (bitField0_ & ~0x00000008);
+        uuid_ = getDefaultInstance().getUuid();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string uuid = 4;</code>
+       */
+      public Builder setUuidBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000008;
+        uuid_ = value;
+        onChanged();
+        return this;
+      }
+
       // @@protoc_insertion_point(builder_scope:wewrite.Action)
     }
 
@@ -680,10 +844,10 @@ public final class WeWriteProtos {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\rWeWrite.proto\022\007wewrite\"D\n\006Action\022\017\n\007me" +
+      "\n\rWeWrite.proto\022\007wewrite\"R\n\006Action\022\017\n\007me" +
       "ssage\030\001 \002(\t\022\021\n\taddDelete\030\002 \002(\010\022\026\n\016cursor" +
-      "Position\030\003 \002(\005B\"\n\021com.melon.wewriteB\rWeW" +
-      "riteProtos"
+      "Position\030\003 \002(\005\022\014\n\004uuid\030\004 \002(\tB\"\n\021com.melo" +
+      "n.wewriteB\rWeWriteProtos"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
       new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -695,7 +859,7 @@ public final class WeWriteProtos {
           internal_static_wewrite_Action_fieldAccessorTable = new
             com.google.protobuf.GeneratedMessage.FieldAccessorTable(
               internal_static_wewrite_Action_descriptor,
-              new java.lang.String[] { "Message", "AddDelete", "CursorPosition", });
+              new java.lang.String[] { "Message", "AddDelete", "CursorPosition", "Uuid", });
           return null;
         }
       };
