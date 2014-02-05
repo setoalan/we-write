@@ -82,6 +82,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		// Instantiate Collabrify Client
 		try {
 			myClient = CollabrifyClient.newClient(this, GMAIL, DISPLAY_NAME, ACCOUNT_GMAIL, ACCESS_TOKEN, false);
+			myClient.setLogEnabled(false);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		} catch (ExecutionException e) {
@@ -117,7 +118,7 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		try {
 			// Creates a session named "Melon 5", can change to create other session to start over
 			// Parameters are in the Collabrify online documentation
-			myClient.createSession("Melon0", tags, null, 1, createSessionListener, sessionListener);
+			myClient.createSession("Melon16", tags, null, 1, createSessionListener, sessionListener);
 			// Calls onSessionCreated
 		} catch (ConnectException e) {
 			e.printStackTrace();
@@ -284,17 +285,33 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 		Utils.printMethodName(TAG);
 		runOnUiThread(new Runnable() {
 			Action mAction;
+			int cursorPosition;
 			@Override
 			public void run() {
 				Log.i("Receiving", TAG);
 				Utils.printMethodName(TAG);
 				try {
 					mEditText.removeTextChangedListener(mEditTextChangeListener);
+					cursorPosition = mEditText.getSelectionStart();
 					mAction = Action.parseFrom(data);
-					if (!mAction.getAddDelete() && mEditText.length() == 1)
-						mEditText.setText("");
-					if (!mAction.getUuid().equals(mUuid))
-						mEditText.setText(mAction.getMessage());
+					if (!mAction.getUuid().equals(mUuid)) {
+						Log.i(mEditText.length() + "", TAG);
+						Log.i(mAction.getMessage(), TAG);
+						Log.i(mAction.getCursorPosition() + "", TAG);
+						if (mAction.getAddDelete()) {
+							// Adding
+							StringBuffer string = new StringBuffer(mEditText.getText().toString());
+							string.insert(mAction.getCursorPosition()-1, mAction.getMessage());
+							mEditText.setText(string);
+							mEditText.setSelection(cursorPosition);
+						} else {
+							// Backspace
+							StringBuffer string = new StringBuffer(mEditText.getText().toString());
+							string.deleteCharAt(mAction.getCursorPosition());
+							mEditText.setText(string);
+							mEditText.setSelection(mAction.getCursorPosition());
+						}
+					}
 					mEditText.addTextChangedListener(mEditTextChangeListener);
 				} catch (InvalidProtocolBufferException e) {
 					e.printStackTrace();
@@ -320,23 +337,45 @@ public class MainActivity extends Activity implements CollabrifySessionListener,
 	
 	private final class EditTextChangeListener implements TextWatcher {
 		
+		private CharSequence mBeforeChange;
+		private CharSequence mAfterChange;
+		
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
-			mAction = Action.newBuilder()
-			.setMessage(mEditText.getText().toString())
-			.setAddDelete(true)
-			.setCursorPosition(MainActivity.mEditText.getSelectionStart())
-			.setUuid(mUuid)
-			.build();
+			mAfterChange = s.subSequence(start, start + count);
+			
+			if (mAfterChange.length() - mBeforeChange.length() == 1) {
+				Log.i("onTextChanged", TAG);
+				mAction = Action.newBuilder()
+					.setMessage(mAfterChange.subSequence(mAfterChange.length()-1, mAfterChange.length()).toString())
+					.setAddDelete(true)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+					.setUuid(mUuid)
+					.build();
+			} else if (mAfterChange.length() - mBeforeChange.length() == -1) {
+				mAction = Action.newBuilder()
+					.setMessage(" ")
+					.setAddDelete(false)
+					.setCursorPosition(MainActivity.mEditText.getSelectionStart())
+					.setUuid(mUuid)
+					.build();
+			} else {
+				return;
+			}
 			
 			broadcast(mAction);
 		}
 		
 		@Override
-		public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			Log.i("beforeTextChanged", TAG);
+			mBeforeChange = s.subSequence(start, start + count);
+		}
 		
 		@Override
-		public void afterTextChanged(Editable s) {}
+		public void afterTextChanged(Editable s) {
+			Log.i("afterTextChanged " + s.length(), TAG);
+		}
 	};
 	
 }
